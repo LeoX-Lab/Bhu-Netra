@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: bhu-netra
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/state
+    envVars:
+      - key: NODE_ENV
+        value: production
