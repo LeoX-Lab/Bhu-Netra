@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bhu-Netra | Land Records Digitization and Validation System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div id="app">
+  <a href="#main-content" style="position:absolute;left:-9999px;top:0;background:#fff;color:#000;padding:8px 14px;z-index:999" onfocus="this.style.left='0'" onblur="this.style.left='-9999px'">Skip to main content</a>
+
+  <!-- ================= GOI STRIP ================= -->
+  <div class="gov-strip"><div class="in">
+    <div>भारत सरकार | <b>GOVERNMENT OF INDIA</b></div>
+    <div class="a11y">
+      <a href="#" onclick="openPolicy('access');return false;">Screen Reader Access</a>
+      <span class="fb">
+        <button onclick="fontAdj(-1)" title="Decrease font size">A-</button>
+        <button onclick="fontReset()" title="Normal font size">A</button>
+        <button onclick="fontAdj(1)" title="Increase font size">A+</button>
+        <button onclick="__toggleHC()" title="Toggle high contrast view">High Contrast</button>
+      </span>
+    </div>
+  </div></div>
+
+  <!-- ================= MINISTRY HEADER ================= -->
+  <div class="site-header"><div class="in">
+    <div class="embwrap">
+      <svg class="emb" viewBox="0 0 60 60" aria-hidden="true">
+        <circle cx="30" cy="30" r="29" fill="#173f6f"/>
+        <circle cx="30" cy="30" r="22" fill="none" stroke="#ffffff" stroke-width="1.4"/>
+        <circle cx="30" cy="30" r="4" fill="#ffffff"/>
+        <g stroke="#ffffff" stroke-width="1.1">
+          <line x1="30" y1="9" x2="30" y2="51"/><line x1="9" y1="30" x2="51" y2="30"/>
+          <line x1="15" y1="15" x2="45" y2="45"/><line x1="45" y1="15" x2="15" y2="45"/>
+          <line x1="30" y1="9" x2="15" y2="15"/><line x1="30" y1="9" x2="45" y2="15"/>
+          <line x1="51" y1="30" x2="45" y2="45"/><line x1="51" y1="30" x2="45" y2="15"/>
+          <line x1="30" y1="51" x2="15" y2="45"/><line x1="30" y1="51" x2="45" y2="45"/>
+        </g>
+      </svg>
+      <div class="htxt">
+        <h1>भू-नेत्र &nbsp;|&nbsp; Bhu-Netra</h1>
+        <div class="hi">राष्ट्रीय भू-अभिलेख अंकीकरण एवं सत्यापन प्रणाली</div>
+        <div class="dept">National Land Record Digitization &amp; Validation System</div>
+        <div class="dept">Department of Land Resources &nbsp;·&nbsp; Ministry of Rural Development &nbsp;·&nbsp; Government of India</div>
+      </div>
+    </div>
+    <div class="hbadges">
+      <div class="hsearch">
+        <input type="text" id="gsearch" placeholder="Search ULPIN / khasra / owner" onkeydown="if(event.key==='Enter')svcSearch()">
+        <button onclick="svcSearch()">Search</button>
+      </div>
+      <div class="dbadge"><b>DILRMP</b>Aligned</div>
+      <div class="dbadge"><b>भू-आधार</b>ULPIN</div>
+      <div class="dbadge" style="background:#f0f4f8; border:1px solid #c9d7e5; color:#173f6f; padding: 4px 6px; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+        <b style="font-size:9px; letter-spacing:0.5px; opacity:0.7; text-transform:uppercase;">Active Role</b>
+        <select id="rbacRole" style="border:none; background:transparent; font-weight:700; font-size:12px; color:#173f6f; outline:none; cursor:pointer; margin-top:2px;" onchange="window.handleRoleChange(this.value)">
+          <option value="officer">Approving Officer</option>
+          <option value="operator">Data Entry Operator</option>
+        </select>
+      </div>
+    </div>
+  </div></div>
+  <div class="tricolor"></div>
+
+  <!-- ================= MAIN NAV ================= -->
+  <div class="mainnav-wrap"><nav class="mainnav" id="nav">
+    <button class="navitem active" data-view="dashboard" onclick="nav('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-8 9 8v8a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Home</button>
+    <button class="navitem" data-view="digitize" onclick="nav('digitize')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 9v11"/></svg>Digitization</button>
+    <button class="navitem" data-view="validate" onclick="nav('validate')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v5c0 5-3.5 8-7 10-3.5-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>Validation</button>
+    <button class="navitem" data-view="registry" onclick="nav('registry')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v13H4z"/><path d="M4 10h16M9 10v9M15 10v9"/></svg>Registry</button>
+    <button class="navitem" data-view="ledger" onclick="nav('ledger')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="7" height="8" rx="1"/><rect x="14" y="8" width="7" height="8" rx="1"/><path d="M10 12h4"/></svg>Integrity Ledger</button>
+    <button class="navitem" data-view="queue" onclick="nav('queue')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 1 6 6c0 4-6 12-6 12S6 13 6 9a6 6 0 0 1 6-6z"/><circle cx="12" cy="9" r="2"/></svg>Review Queue<span class="cnt" id="qBadge"></span></button>
+    <button class="navitem" data-view="pitch" onclick="nav('pitch')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg>About &amp; Help</button>
+  </nav></div>
+
+  <!-- ================= CRUMB / STATUS ================= -->
+  <div class="crumbbar"><div class="in">
+    <div>You are here: <a href="#" onclick="nav('dashboard');return false;">Home</a> &raquo; <b id="crumb">Dashboard</b></div>
+    <div class="flex wrap">
+      <span class="chip" id="chipEngine" title="OCR engine status"><span class="dot"></span><span id="chipEngineTxt">Engine: checking…</span></span>
+      <span class="chip" id="chipStore" title="Storage mode"><span class="dot"></span><span id="chipStoreTxt">Storage: …</span></span>
+      <span class="mono small muted" id="clock"></span>
+      <button class="btn btn-primary btn-sm" onclick="nav('digitize')">New Digitization</button>
+    </div>
+  </div></div>
+
+  <!-- ================= PAGE HEAD ================= -->
+  <div style="max-width:1280px;margin:0 auto;padding:14px 16px 0;width:100%">
+    <div id="pageTitle">Dashboard</div>
+    <div class="small muted" id="pageSub">Digitization and validation summary</div>
+    <hr style="border:0;border-top:2px solid var(--acc);margin:8px 0 0">
+  </div>
+
+  <main id="main-content">
+    <!-- ============ DASHBOARD ============ -->
+    <section class="view on" id="view-dashboard">
+      <div class="hero">
+        <div class="hl">
+          <h2>From torn paper records to verified digital titles<span class="hi">फटे कागज़ी अभिलेखों से — सत्यापित डिजिटल अभिलेखों तक</span></h2>
+          <p>Bhu-Netra digitizes jamabandi, fard, khatauni and deed scans with OCR and per-field confidence, validates every record through a 10-point rule engine (duplicates, mutation chains, litigation, geo-sanity) and seals approved entries with a Bhu-Aadhaar-style ULPIN and a tamper-evident hash ledger.</p>
+          <div class="cta">
+            <button class="btn btn-hero" onclick="nav('digitize')">Digitize a Record</button>
+            <button class="btn btn-ghostw" onclick="svcVerify()">Verify a ULPIN / Khasra</button>
+            <button class="btn btn-ghostw" onclick="nav('pitch')">How it works</button>
+          </div>
+        </div>
+        <div class="art">
+          <svg viewBox="0 0 240 190" aria-hidden="true">
+            <rect x="10" y="15" width="220" height="160" rx="6" fill="#0d2340" stroke="#3d6db3"/>
+            <g stroke="#3d6db3" stroke-width="1" fill="none" opacity=".55">
+              <path d="M10 70h220M10 120h220M70 15v160M150 15v160"/>
+            </g>
+            <polygon points="30,40 90,32 96,66 36,74" fill="#1e5b2a" opacity=".55" stroke="#7fd08a"/>
+            <polygon points="110,30 168,38 160,72 104,64" fill="#8a5a1a" opacity=".55" stroke="#ffd9ae"/>
+            <polygon points="34,96 92,88 98,126 40,132" fill="#1c4a82" opacity=".8" stroke="#9cc2ee"/>
+            <polygon points="118,92 176,98 170,134 112,128" fill="#1e5b2a" opacity=".4" stroke="#7fd08a"/>
+            <g transform="translate(120,118)">
+              <path d="M0-16a10 10 0 0 1 10 10c0 7-10 16-10 16S-10 1-10-6a10 10 0 0 1 10-10z" fill="#ff9933" stroke="#fff" stroke-width="1.5"/>
+              <circle cx="0" cy="-6" r="3.6" fill="#0d2340"/>
+            </g>
+            <g stroke="#ffd9ae" stroke-width="1.4" opacity=".85">
+              <path d="M46 52h36M130 48h30M56 112h32"/>
+            </g>
+            <text x="120" y="182" text-anchor="middle" font-size="9" fill="#9cc2ee" font-family="Courier New">GEO-REFERENCED PARCEL LAYER (BHU-NAKSHA LINK)</text>
+          </svg>
+        </div>
+        <div class="facts">
+          <div class="fact"><b>10-point</b><span>rule-based validation</span></div>
+          <div class="fact"><b>SHA-256</b><span>sealed integrity ledger</span></div>
+          <div class="fact"><b>14-digit</b><span>ULPIN with check digit</span></div>
+          <div class="fact"><b>15 packs</b><span>Indian-language OCR (hin, pan, tam, ben...)</span></div>
+        </div>
+      </div>
+
+      <div class="services">
+        <div class="svc" onclick="svcVerify()">
+          <div class="si"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+          <div class="st">Verify a Record</div>
+          <div class="sh">Check ULPIN, owner or khasra against the registry and its integrity seal</div>
+        </div>
+        <div class="svc" onclick="nav('digitize')">
+          <div class="si"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 9v11"/></svg></div>
+          <div class="st">Digitize a Scan</div>
+          <div class="sh">OCR pipeline with image QA, field extraction and confidence scoring</div>
+        </div>
+        <div class="svc" onclick="nav('ledger')">
+          <div class="si"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="7" height="8" rx="1"/><rect x="14" y="8" width="7" height="8" rx="1"/><path d="M10 12h4"/></svg></div>
+          <div class="st">Integrity Ledger</div>
+          <div class="sh">Hash-linked blocks; verify the full chain or test tamper detection</div>
+        </div>
+        <div class="svc" onclick="nav('queue')">
+          <div class="si"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 1 6 6c0 4-6 12-6 12S6 13 6 9a6 6 0 0 1 6-6z"/><circle cx="12" cy="9" r="2"/></svg></div>
+          <div class="st">Discrepancy Queue</div>
+          <div class="sh">Fraud and litigation flags raised by the engine, pending officer review</div>
+        </div>
+      </div>
+      <div class="mt2"></div>
+      <div class="grid4" id="kpiRow"></div>
+      <div class="grid2 mt2">
+        <div class="card">
+          <h3>Validation status mix</h3>
+          <div class="hint">Outcome of the intelligent rule engine across the registry</div>
+          <div id="donutWrap" class="flex" style="gap:22px;justify-content:center;padding:8px 0"></div>
+          <div class="legend" style="justify-content:center" id="donutLegend"></div>
+        </div>
+        <div class="card">
+          <h3>District-wise digitized parcels</h3>
+          <div class="hint">Records onboarded into the registry, by district</div>
+          <div id="barWrap" style="padding-top:6px"></div>
+        </div>
+      </div>
+      <div class="grid2 mt2">
+        <div class="card">
+          <h3>Recent activity</h3>
+          <div class="hint">Every action is logged and hash-anchored</div>
+          <ul class="activity" id="activityList"></ul>
+        </div>
+        <div class="card">
+          <h3>Ledger health</h3>
+          <div class="hint">Hash-linked blocks seal every committed record</div>
+          <div id="ledgerMini"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DIGITIZE ============ -->
+    <section class="view" id="view-digitize">
+      <div class="grid23">
+        <div>
+          <div class="card">
+            <h3>1 - Choose source document</h3>
+            <div class="hint">Pick a sample scan or upload your own image - every document runs real OCR on the server. Documents mirror real Jamabandi / Fard / Sale-Deed formats.</div>
+            <div class="thumbs" id="sampleGrid"></div>
+            <div class="dropzone mt" id="dropZone" onclick="document.getElementById('uploadInput').click()">
+              <div><b>Upload scanned record</b> (JPG / PNG photo or scan)</div>
+              <div class="small" style="margin-top:3px">The image is preprocessed (downscale, grayscale, contrast stretch) and then read by live OCR. The engine library is fetched from a CDN, so an internet connection is required.</div>
+              <input type="file" id="uploadInput" accept="image/*" style="display:none">
+            </div>
+            <div class="note blue mt" style="display:none" id="uploadNote"></div>
+          </div>
+          <div class="card mt">
+            <h3>2 - Digitization pipeline</h3>
+            <div class="hint">Ingest → deskew / denoise → classify → OCR → NLP field extraction → confidence scoring</div>
+            <div class="stepper" id="pipeSteps">
+              <div class="step" data-n="1" id="st0">Ingest</div>
+              <div class="step" data-n="2" id="st1">Preprocess</div>
+              <div class="step" data-n="3" id="st2">Classify</div>
+              <div class="step" data-n="4" id="st3">OCR</div>
+              <div class="step" data-n="5" id="st4">Extract</div>
+              <div class="step" data-n="6" id="st5">Score</div>
+            </div>
+            <div class="small muted" id="pipelineMeta">Idle - select a document to begin.</div>
+            <div class="terminal mt" id="terminal"><div class="ln sys">Log initialized. Select a document to begin.</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <h3 class="sp" style="display:flex;justify-content:space-between;align-items:center"><span>3 - Document viewer</span><span class="chip" id="docChip"><span class="dot"></span>-</span></h3>
+            <div class="docstage mt" id="docStage"><div class="docpaper" id="docPaper"><div style="padding:60px 30px;color:#94a3b8;text-align:center;font-size:13px">No document loaded.<br>Select a sample or upload a scan →</div></div></div>
+          </div>
+          <div class="card mt">
+            <h3 class="sp" style="display:flex;justify-content:space-between;align-items:center"><span>4 - Extracted fields - human-in-the-loop</span><span class="small muted" id="hitlHint">Editable: fix low-confidence cells, then re-validate</span></h3>
+            <div id="fieldsWrap">
+              <div class="note blue">Extraction results will appear here. Fields under <b>75% confidence</b> are highlighted for operator verification (HITL) before validation.</div>
+            </div>
+            <div class="flex mt wrap" style="justify-content:flex-end">
+              <button class="btn" id="btnRerun" disabled onclick="rerunPipeline()">Re-run Pipeline</button>
+              <button class="btn btn-primary" id="btnValidate" disabled onclick="goValidate()">Run Validation</button>
+              <button class="btn btn-green" id="btnSealQuick" disabled onclick="commit()" style="display:none">Approve and Seal</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VALIDATION ============ -->
+    <section class="view" id="view-validate">
+      <div id="valEmpty">
+        <div class="card" style="text-align:center;padding:50px 20px">
+          <h3 style="justify-content:center;margin-top:8px">Validation engine idle</h3>
+          <div class="hint" style="max-width:420px;margin:8px auto 14px">Digitize a document first - the engine runs 10 explainable rule checks (R1–R10) against the registry, mutation registers, court-case feeds and geo-data.</div>
+          <button class="btn btn-primary" onclick="nav('digitize')">Open Digitization</button>
+        </div>
+      </div>
+      <div id="valBody" style="display:none">
+        <div class="card">
+          <div class="sp wrap" style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+            <div>
+              <h3 id="valDocTitle">-</h3>
+              <div class="small muted" id="valDocMeta"></div>
+            </div>
+            <div class="flex wrap">
+              <button class="btn btn-sm" onclick="nav('digitize')">← Back to document</button>
+              <button class="btn btn-sm" onclick="goValidate()">Re-run Checks</button>
+            </div>
+          </div>
+        </div>
+        <div class="grid2 valgrid mt2">
+          <div>
+            <div id="verdictBanner"></div>
+            <div class="mt" id="checksList"></div>
+          </div>
+          <div>
+            <div class="card">
+              <h3>Integrity risk score</h3>
+              <div class="hint">Weighted: fail −25, warn −8, low OCR confidence −5</div>
+              <div class="gaugewrap" id="gaugeWrap"></div>
+              <div class="verdict-chips mt" id="verdictChips"></div>
+            </div>
+            <div class="card mt">
+              <h3>Decision</h3>
+              <div class="hint">Based on the verdict above</div>
+              <div class="flex wrap">
+                <button class="btn btn-green" id="btnCommit" onclick="commit()">Commit and Seal Record</button>
+                <button class="btn btn-danger" id="btnQueue" onclick="sendToQueue()">Send to Review Queue</button>
+              </div>
+              <div class="small muted mt">Sealing generates a 14-digit ULPIN (Bhu-Aadhaar-style ID with Luhn check digit), a SHA-256 content hash and appends an immutable block to the Integrity Ledger.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ REGISTRY ============ -->
+    <section class="view" id="view-registry">
+      <div class="toolbar" style="display:flex; flex-wrap:wrap; gap:8px;">
+        <input type="search" id="regSearch" placeholder="Search ULPIN, owner, khasra no., village, tehsil, district…" oninput="renderRegistry()" style="flex:1;">
+        <select id="regStatus" onchange="renderRegistry()"><option value="">All statuses</option><option value="validated">Validated</option><option value="flagged">Flagged</option><option value="pending">Pending</option></select>
+        <select id="regState" onchange="renderRegistry()"><option value="">All states</option></select>
+        <span class="chip ok" id="regCount"><span class="dot"></span>0 records</span>
+        <button class="btn btn-primary" onclick="exportGeoJSON()">Export DILRMP / GeoJSON</button>
+      </div>
+      <div class="tablewrap">
+        <table class="rt">
+          <thead><tr><th>ULPIN (Bhu-Aadhaar)</th><th>Owner</th><th>Khasra / Survey</th><th>Village - Tehsil</th><th>District - State</th><th>Area</th><th>Status</th><th>Block</th><th>Avg conf.</th></tr></thead>
+          <tbody id="regBody"></tbody>
+        </table>
+      </div>
+      <div class="small muted mt">Click a row to open the full record. Verify Hash checks the seal; Simulate Edit demonstrates detection.</div>
+    </section>
+
+    <!-- ============ LEDGER ============ -->
+    <section class="view" id="view-ledger">
+      <div class="card">
+        <div class="sp wrap" style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+          <div>
+            <h3>Hash-linked Integrity Ledger</h3>
+            <div class="hint">Every sealed record is anchored in a block. Each block stores the SHA-256 of its contents + the previous block's hash - retro edits break the chain.</div>
+          </div>
+          <div class="flex wrap">
+            <button class="btn btn-green" onclick="verifyChain(true)">Verify All Blocks</button>
+            <button class="btn btn-danger" id="btnTamperBlock" onclick="tamperChainBlock()">Test Tamper Detection</button>
+          </div>
+        </div>
+        <div id="chainHealth" class="mt"></div>
+        <div class="blocksrow mt" id="blocksRow"></div>
+      </div>
+    </section>
+
+    <!-- ============ QUEUE ============ -->
+    <section class="view" id="view-queue">
+      <div class="card" style="background:linear-gradient(180deg,#fff,#fffbeb);border-color:#fde68a">
+        <h3>Discrepancy Review Queue</h3>
+        <div class="hint">Records auto-flagged by the validation engine - duplicate claims, broken mutation chains, lis pendens, low-quality scans. Resolving an item logs an audited action.</div>
+        <div id="queueStats" class="flex wrap"></div>
+      </div>
+      <div class="mt2" id="queueList"></div>
+    </section>
+
+    <!-- ============ ABOUT / HELP ============ -->
+    <section class="view" id="view-pitch">
+      <div class="card">
+        <h3>About this system</h3>
+        <div class="hint">Purpose, method and limitations of the prototype</div>
+        <p class="doc">Bhu-Netra is a browser-based prototype for digitizing and validating scanned land records (jamabandi, fard, khatauni, mutation extracts and sale deeds). It runs an OCR pipeline with per-field confidence scoring, a human verification step for low-confidence fields, a ten-rule validation engine, and seals approved records with a ULPIN identity and a hash-linked integrity entry. The prototype demonstrates a validation layer that could sit on top of existing digitization programmes; it is not a replacement for any state land records system.</p>
+      </div>
+      <div class="grid2 mt2">
+        <div class="card">
+          <h3>Background</h3>
+          <ul class="doc">
+            <li>Land and property disputes account for roughly two-thirds of all civil cases in Indian courts, and about a quarter of Supreme Court cases.</li>
+            <li>Acquisition-related disputes take roughly 20 years on average from dispute to Supreme Court resolution.</li>
+            <li>About 95% of rural land records have been computerized under DILRMP, but re-survey and data-quality work lags: records are often hand-written, multilingual, torn or faded.</li>
+            <li>Digitization without validation copies errors and fraud straight into the database. The gap Bhu-Netra addresses is the step between a scan and a trustworthy record.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Processing stages</h3>
+          <ol class="doc">
+            <li><b>Intake and image QA</b> - deskew, denoise, binarize; quality graded A/B/C before OCR is attempted.</li>
+            <li><b>OCR</b> - every document (built-in samples and uploads) runs real Tesseract OCR on the Node.js backend; manual entry form as fallback.</li>
+            <li><b>Field extraction</b> - tokens mapped to the record schema (khasra, khewat, khatauni, owner, area, mutation), each with a confidence score.</li>
+            <li><b>Human verification (HITL)</b> - only fields below threshold are routed to the operator; verified fields are marked in the audit trail.</li>
+            <li><b>Validation and sealing</b> - ten rule checks; passing records receive a ULPIN, SHA-256 hash and ledger block.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="grid2 mt2">
+        <div class="card">
+          <h3>Validation checks (R1-R10)</h3>
+          <ol class="doc">
+            <li>Khasra / survey number format</li>
+            <li>Area sanity and unit conversion (acre, kanal, marla, bigha, biswa, sq m)</li>
+            <li>Area cross-check: printed figure vs computed value</li>
+            <li>Duplicate parcel ownership against the registry</li>
+            <li>Mutation (inteqal) chain integrity</li>
+            <li>Owner-name fuzzy consistency (Levenshtein)</li>
+            <li>Date logic (future dates, mutation before deed)</li>
+            <li>Geo-reference check via the cadastral map layer (Bhu-Naksha) - coordinates are never OCR-read from the document text</li>
+            <li>Encumbrance / lis pendens from the e-Courts feed</li>
+            <li>OCR confidence floor (human-verification gate)</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>Selected indicators</h3>
+          <div class="tablewrap" style="max-height:none">
+          <table class="rt">
+            <thead><tr><th>Indicator</th><th>Value</th><th>Source (as commonly cited)</th></tr></thead>
+            <tbody>
+              <tr><td>Civil cases related to land</td><td>~66%</td><td>Daksh high-court study (2016)</td></tr>
+              <tr><td>Supreme Court cases involving land</td><td>~25%</td><td>Daksh / CPR analyses</td></tr>
+              <tr><td>Average pendency, acquisition dispute</td><td>~20 years</td><td>Centre for Policy Research</td></tr>
+              <tr><td>Total pending court cases</td><td>5.6 crore+</td><td>NJDG / pendency trackers, 2026</td></tr>
+              <tr><td>Rural records computerized (DILRMP)</td><td>~95%</td><td>Dept. of Land Resources reports</td></tr>
+            </tbody>
+          </table>
+          </div>
+          <div class="hint" style="margin-top:8px">Figures are indicative and drawn from public studies; verify before quoting in official material.</div>
+        </div>
+      </div>
+      <div class="card mt2">
+        <h3>Demonstration walkthrough</h3>
+        <ol class="doc">
+          <li><b>Clean record:</b> Record Digitization, sample A (Jamabandi, Khanpur). Run the pipeline; confidence is high, no operator action needed. Run Validation - all ten checks pass. Commit and Seal: a ULPIN, hash and ledger block are generated.</li>
+          <li><b>Noisy scan:</b> Sample B (Hindi fard, faded ink). The OCR mis-reads the area figure; check R3 fails. Apply the suggested correction, re-run - now passes with warnings. Note the name-spelling suggestion (Krishna vs Krishan).</li>
+          <li><b>Fraud detection:</b> Sample C (sale deed, Raipur Rani). The scan is clean, but the khasra is already registered to another owner and the vendor is not in the mutation chain. R4 and R5 fail; sealing is blocked; send it to the Review Queue.</li>
+          <li><b>Litigation freeze:</b> Sample D (1998 mutation extract under lis pendens). Even after verifying every field manually, R9 keeps the record blocked.</li>
+          <li><b>Integrity:</b> Records Registry - open any record - Verify Hash, then Simulate Edit, then Verify Hash again. Integrity Ledger - Verify All Blocks, then Test Tamper Detection to see the chain break and cascade.</li>
+          <li><b>Queue:</b> Review Queue - resolve or reject flagged items; every action is written to the audit trail.</li>
+        </ol>
+      </div>
+      <div class="card mt2">
+        <h3>Alignment with Smart India Hackathon 2026 themes</h3>
+        <ul class="doc">
+          <li><b>Agriculture, FoodTech and Rural Development:</b> direct support to DILRMP digitization and re-survey backlog; reduces dependence on manual patwari data entry while keeping officers in the loop.</li>
+          <li><b>Blockchain for Governance:</b> tamper-evident, hash-linked record sealing with full-chain verification - retroactive edits are provably detectable without a cryptocurrency or energy-heavy consensus.</li>
+          <li><b>Smart Automation (Software - Web):</b> OCR with confidence gating routes only weak fields to humans; explainable rule-based decisions keep the approval process auditable and legally defensible.</li>
+        </ul>
+        <div class="hint" style="margin-top:8px">Deployment vision: operate as a validation and sealing layer on top of existing state land-records software (Bhulekh / Jamabandi portals), consuming scans already collected at e-Disha and CSC kiosks.</div>
+      </div>
+      <div class="card mt2">
+        <h3>Reference - extraction schema mapped to real record formats</h3>
+        <div class="hint">The OCR schema is derived from the column layouts of actual records of rights; only fields required for parcel identity and validation are extracted. Cultivation, land-class, revenue and tenancy columns remain preserved in the archived scan image but are not extracted, since they do not affect title validation.</div>
+        <div class="tablewrap" style="max-height:none">
+        <table class="rt">
+          <thead><tr><th>Record format</th><th>Where used</th><th>Fields the engine extracts</th></tr></thead>
+          <tbody>
+            <tr><td>Jamabandi / Fard (Record of Rights)</td><td>Punjab, Haryana, Rajasthan, HP</td><td>Khewat no., Khatauni no., Khasra no., owner with parentage, area (kanal-marla / acre), mutation (intkal) no., type and date</td></tr>
+            <tr><td>Khatauni (RoR)</td><td>Uttar Pradesh, Uttarakhand</td><td>Khatauni no., khasra no., khewat, owner with parentage, area (bigha-biswa), dakhil kharij reference</td></tr>
+            <tr><td>Saat-Bara (7/12) extract</td><td>Maharashtra, Goa</td><td>Survey / Gat no., khata no., owner and mode of acquisition, area (hectares), encumbrance and mutation entries</td></tr>
+            <tr><td>Patta / Chitta / Adangal</td><td>Tamil Nadu, Puducherry</td><td>Patta no., survey no. and subdivision, taluk and village, owner with father, extent (acres-cents)</td></tr>
+            <tr><td>Khatian (RoR) / ROR Khatiyan</td><td>West Bengal, Odisha, Assam</td><td>Dag / plot no., Khatian no., mouza, raiyat with father, share, area (katha-decimal)</td></tr>
+            <tr><td>RTC / Pahani</td><td>Karnataka</td><td>Survey no. and hissa, owner, extent (acres-guntas), mutation reference</td></tr>
+            <tr><td>Registered sale deed</td><td>All states (Sub-Registrar)</td><td>Deed no. and date, vendor, vendee, consideration, stamp duty, property schedule (khasra, area)</td></tr>
+            <tr><td>Mutation extract (intkal / ferfar / naam saari)</td><td>All states</td><td>Mutation no. and date, type (sale / inheritance / gift), prior and new holder</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="note blue" style="margin-top:10px"><b>Why the schema has no latitude / longitude:</b> no record of rights prints coordinates. The geo-reference for ULPIN comes from the surveyed cadastral map layer (Bhu-Naksha / SVAMITVA), which check R8 queries separately - so a document can never inject a false location.</div>
+      </div>
+      <div class="card mt2">
+        <h3>Language coverage - all major Indian record languages</h3>
+        <div class="tablewrap" style="max-height:none">
+        <table class="rt">
+          <thead><tr><th>Language (script)</th><th>tessdata pack</th><th>Typical record types / states</th></tr></thead>
+          <tbody>
+            <tr><td>हिन्दी Hindi (Devanagari)</td><td class="mono">hin</td><td>Jamabandi, Khatauni - UP, Bihar, MP, Rajasthan, Haryana, HP, Uttarakhand, Jharkhand, Chhattisgarh, Delhi</td></tr>
+            <tr><td>ਪੰਜਾਬੀ Punjabi (Gurmukhi)</td><td class="mono">pan</td><td>Fard, Jamabandi - Punjab</td></tr>
+            <tr><td>मराठी Marathi (Devanagari)</td><td class="mono">mar</td><td>Saat-Bara (7/12) extract - Maharashtra, Goa</td></tr>
+            <tr><td>ગુજરાતી Gujarati</td><td class="mono">guj</td><td>7/12 and Village Form 6 - Gujarat, Daman</td></tr>
+            <tr><td>বাংলা Bengali</td><td class="mono">ben</td><td>Khatian, Dag - West Bengal, Tripura, A&amp;N</td></tr>
+            <tr><td>தமிழ் Tamil</td><td class="mono">tam</td><td>Patta, Chitta, Adangal - Tamil Nadu, Puducherry</td></tr>
+            <tr><td>తెలుగు Telugu</td><td class="mono">tel</td><td>Adangal, Pahani - Andhra Pradesh, Telangana</td></tr>
+            <tr><td>ಕನ್ನಡ Kannada</td><td class="mono">kan</td><td>RTC / Pahani - Karnataka</td></tr>
+            <tr><td>മലയാളം Malayalam</td><td class="mono">mal</td><td>Thandaper, Pokkuvaravu - Kerala, Lakshadweep</td></tr>
+            <tr><td>ଓଡ଼ିଆ Odia</td><td class="mono">ori</td><td>Khatian, ROR - Odisha</td></tr>
+            <tr><td>অসমীয়া Assamese</td><td class="mono">asm</td><td>Jamabandi - Assam</td></tr>
+            <tr><td>اردو Urdu (Perso-Arabic)</td><td class="mono">urd</td><td>Old extracts - Jammu &amp; Kashmir, parts of UP/Bihar</td></tr>
+            <tr><td>नेपाली Nepali</td><td class="mono">nep</td><td>Sikkim, Darjeeling (kitta / ropani records)</td></tr>
+            <tr><td>संस्कृत Sanskrit</td><td class="mono">san</td><td>Older pandulipi-style records</td></tr>
+            <tr><td>English</td><td class="mono">eng</td><td>All states - bilingual headings, deeds, notifications</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="hint" style="margin-top:8px">Language detection is automatic: records are first read with Hindi + English packs (covering all Devanagari states); if the output shows no Devanagari or Latin script, a regional sweep loads the remaining packs. The field mapper understands revenue terminology per language (khasra / dag / survey no / gat / kitta; khewat / khatian / khatauni; raqba / area / parisrama; dakhil-kharij / ferfar / patta transfer / naam saari) and normalizes native-script numerals. Languages without offline tessdata packs here (Meitei, Bodo, Kashmiri perso-arabic) would use cloud OCR in production.</div>
+      </div>
+      <div class="grid2 mt2">
+        <div class="card">
+          <h3>What is real in this prototype</h3>
+          <ul class="doc">
+            <li>SHA-256 hashing via WebCrypto (with a deterministic fallback where the API is unavailable).</li>
+            <li>Luhn check digit on every 14-digit ULPIN.</li>
+            <li>Unit conversions (marla, kanal, acre, bigha, biswa to square metres) and cross-checking.</li>
+            <li>Levenshtein fuzzy matching for owner names.</li>
+            <li>Duplicate detection and mutation-chain logic over the local registry.</li>
+            <li>Hash-linked ledger with full-chain verification.</li>
+            <li>The entire application is a single HTML file that runs in the browser. All modules - samples, validation, registry, ledger - work without internet; only live OCR of uploaded scans and the web font fetch from a CDN.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>What is simulated, and the production path</h3>
+          <ul class="doc">
+            <li>The four sample documents are generated images, not real scans; no citizen data is used anywhere.</li>
+            <li>All samples and uploads run real server-side OCR (Tesseract on the backend) - the terminal log narrates each pass. Manual entry remains the fallback for unreadable documents.</li>
+            <li>The mutation register and e-Courts feeds are small demo datasets.</li>
+            <li>Production deployment would use cloud OCR or vision-model extraction for Hindi and regional scripts, connectors to state record databases, the official ULPIN service, the real e-Courts API, and periodic anchoring of ledger roots.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    
+  </main>
+    <footer>
+    <div class="fcols">
+      <div>
+        <h4>Bhu-Netra | भू-नेत्र</h4>
+        <p>National Land Record Digitization &amp; Validation System - OCR digitization, rule-based validation and hash-linked integrity sealing for land records, aligned with DILRMP and ULPIN (Bhu-Aadhaar) programme guidelines.</p>
+        <p class="small" style="margin-top:6px;color:#8fa9c9">All data in this demonstration is synthetic.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <a href="#" onclick="nav('digitize');return false;">Record Digitization</a>
+        <a href="#" onclick="nav('validate');return false;">Validation Engine</a>
+        <a href="#" onclick="nav('registry');return false;">Records Registry</a>
+        <a href="#" onclick="nav('ledger');return false;">Integrity Ledger</a>
+        <a href="#" onclick="nav('queue');return false;">Review Queue</a>
+      </div>
+      <div>
+        <h4>Information</h4>
+        <a href="#" onclick="nav('pitch');return false;">About &amp; Help</a>
+        <a href="#" onclick="nav('pitch');return false;">Demo Walkthrough</a>
+        <a href="#" onclick="openPolicy('access');return false;">Accessibility Statement</a>
+        <a href="#" onclick="openPolicy('privacy');return false;">Privacy Policy</a>
+        <a href="#" onclick="openPolicy('terms');return false;">Terms &amp; Conditions</a>
+      </div>
+      <div>
+        <h4>Contact (Demonstration)</h4>
+        <p>Joint Secretary (Land Records)<br>Department of Land Resources<br>Ministry of Rural Development<br>New Delhi - 110011</p>
+        <p class="small" style="margin-top:6px">Helpdesk: landrecords-help[at]demo[dot]gov[dot]in<br>Working days: Mon-Fri, 9:30 AM - 6:00 PM IST</p>
+      </div>
+    </div>
+    <div class="fbot"><div class="in">
+      <div>Visitor Count: <span class="vc" id="visits">0042137</span> &nbsp;|&nbsp; Last Updated: 07 Sep, 2026</div>
+      <div>Content owned by Department of Land Resources, Ministry of Rural Development, Government of India</div>
+      <div class="flex">
+        <button class="btn btn-sm" style="border-color:#2c4b76;color:#b9cbe0;background:transparent" onclick="resetDemo()">Reset Demo Data</button>
+      </div>
+    </div></div>
+  </footer>
+</div>
+
+<div id="toasts"></div>
+<div id="modalRoot"></div>
+<script src="app.js" defer></script>
+</body>
+</html>
