@@ -20,7 +20,8 @@ async function scanImage(imageInput, onStatus) {
         { text: `Analyze this image. You must return a valid JSON object with exactly three keys: "isLandRecord", "rawText", and "fields".
 "isLandRecord" must be a boolean (true or false). Set to true ONLY if the image appears to be a land record, deed, affidavit, cadastral map, or official property document. Set to false if it is a random image, selfie, animal, or unrelated document.
 "rawText" must contain the complete, raw transcribed text from the image, preserving line breaks. (Leave empty if not a land record)
-"fields" must be an object extracting the following details if they exist (leave as empty string if not found): docType, docDate, state, district, tehsil, village, khasra, khewat, khatuni, owner, father, deedNo, seller, consideration, areaStr, areaSqM, landClass, mutationNo, mutationDate, mutationType, latitude, longitude.` },
+"fields" must be an object extracting the following details if they exist (leave as empty string if not found): docType, docDate, state, district, tehsil, village, khasra, khewat, khatuni, owner, father, deedNo, seller, consideration, areaSqM, landClass, mutationNo, mutationDate, mutationType, latitude, longitude, areaStr.
+For "areaStr": STRICTLY extract ONLY numerical area measurements with their units (e.g., '1.5 acres', '500 sq ft', '2 hectares', '5 marla'). DO NOT extract flat numbers, floor numbers, or property addresses into this field. Leave empty if no explicit area measurement is written.` },
         { inline_data: { mime_type: "image/png", data: b64 } }
       ]
     }],
