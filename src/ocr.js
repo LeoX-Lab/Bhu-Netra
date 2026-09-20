@@ -44,25 +44,39 @@ For "areaStr": STRICTLY extract ONLY numerical area measurements with their unit
     }
   };
 
-  const data = await new Promise((resolve, reject) => {
-    const req = https.request(options, (res) => {
-      let responseBody = '';
-      res.on('data', (chunk) => responseBody += chunk);
-      res.on('end', () => {
-        if (res.statusCode < 200 || res.statusCode >= 300) {
-          return reject(new Error(`API Error: ${res.statusCode} - ${responseBody}`));
+  const makeRequest = async (retries = 3) => {
+    for (let i = 0; i < retries; i++) {
+      try {
+        return await new Promise((resolve, reject) => {
+          const req = https.request(options, (res) => {
+            let responseBody = '';
+            res.on('data', (chunk) => responseBody += chunk);
+            res.on('end', () => {
+              if (res.statusCode < 200 || res.statusCode >= 300) {
+                if (res.statusCode === 503 || res.statusCode === 429) {
+                   return reject({retry: true, msg: `API Error: ${res.statusCode} - ${responseBody}`});
+                }
+                return reject(new Error(`API Error: ${res.statusCode} - ${responseBody}`));
+              }
+              try { resolve(JSON.parse(responseBody)); } catch (e) { reject(e); }
+            });
+          });
+          req.on('error', (e) => reject({retry: true, msg: e.message}));
+          req.write(dataString);
+          req.end();
+        });
+      } catch (err) {
+        if (err.retry && i < retries - 1) {
+          say(`Google API busy. Retrying silently in background... (${i+1}/3)`);
+          await new Promise(r => setTimeout(r, 2000));
+        } else {
+          throw err instanceof Error ? err : new Error(err.msg);
         }
-        try {
-          resolve(JSON.parse(responseBody));
-        } catch (e) {
-          reject(e);
-        }
-      });
-    });
-    req.on('error', (e) => reject(e));
-    req.write(dataString);
-    req.end();
-  });
+      }
+    }
+  };
+  
+  const data = await makeRequest();
   
   const jsonString = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
   let parsed = { isLandRecord: true, rawText: '', fields: {} };
