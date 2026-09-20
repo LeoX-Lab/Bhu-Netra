@@ -64,6 +64,8 @@ window.addEventListener('error',e=>{try{toast('Runtime error',(e.message||'unkno
 
 const m2ToAcreKanal=v=>{const marla=v/MARLA_M2;const acres=Math.floor(marla/160);const kanal=Math.floor((marla-acres*160)/20);const ml=Math.round(marla-acres*160-kanal*20);return (acres?acres+' A ':'')+(kanal?kanal+' K ':'')+(ml||(!acres&&!kanal)?ml+' M':'');};
 
+function luhnDigit(digs){let s=0,dbl=true;for(let i=digs.length-1;i>=0;i--){let d=+digs[i];if(dbl){d*=2;if(d>9)d-=9;}s+=d;dbl=!dbl;}return String((10-(s%10))%10);}
+function ulpinValid(u){return /^\d{14}$/.test(u)&&luhnDigit(u.slice(0,13))===u[13];}
 function ulpinGroups(u){return u.slice(0,2)+'-'+u.slice(2,4)+'-'+u.slice(4,6)+'-'+u.slice(6,10)+'-'+u.slice(10,13)+'-'+u.slice(13);}
 
 
