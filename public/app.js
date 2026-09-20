@@ -488,6 +488,7 @@ function renderValidation(){
 const stripTags=s=>String(s).replace(/<[^>]*>/g,'');
 
 /* ================= pseudo-QR integrity seal ================= */
+function simHash(s){let h=0;for(let i=0;i<s.length;i++)h=Math.imul(31,h)+s.charCodeAt(i)|0;return Math.abs(h).toString(16).padStart(8,'0').repeat(8);}
 function pseudoQR(str){
   const h=simHash(str),N=21,cell=[];
   for(let y=0;y<N;y++){cell[y]=[];for(let x=0;x<N;x++)cell[y][x]=((parseInt(h[(y*N+x)%64],16)+((y*7+x*13)%16))%3===0)?1:0;}
