@@ -352,7 +352,7 @@
           <h3>Processing stages</h3>
           <ol class="doc">
             <li><b>Intake and image QA</b> - deskew, denoise, binarize; quality graded A/B/C before OCR is attempted.</li>
-            <li><b>OCR</b> - every document (built-in samples and uploads) runs real Tesseract OCR on the Node.js backend; manual entry form as fallback.</li>
+            <li><b>OCR</b> - every document (built-in samples and uploads) runs Gemini Vision AI on the Node.js backend; manual entry form as fallback.</li>
             <li><b>Field extraction</b> - tokens mapped to the record schema (khasra, khewat, khatauni, owner, area, mutation), each with a confidence score.</li>
             <li><b>Human verification (HITL)</b> - only fields below threshold are routed to the operator; verified fields are marked in the audit trail.</li>
             <li><b>Validation and sealing</b> - ten rule checks; passing records receive a ULPIN, SHA-256 hash and ledger block.</li>
@@ -475,7 +475,7 @@
           <h3>What is simulated, and the production path</h3>
           <ul class="doc">
             <li>The four sample documents are generated images, not real scans; no citizen data is used anywhere.</li>
-            <li>All samples and uploads run real server-side OCR (Tesseract on the backend) - the terminal log narrates each pass. Manual entry remains the fallback for unreadable documents.</li>
+            <li>All samples and uploads run real server-side OCR (Gemini Vision on the backend) - the terminal log narrates each pass. Manual entry remains the fallback for unreadable documents.</li>
             <li>The mutation register and e-Courts feeds are small demo datasets.</li>
             <li>Production deployment would use cloud OCR or vision-model extraction for Hindi and regional scripts, connectors to state record databases, the official ULPIN service, the real e-Courts API, and periodic anchoring of ledger roots.</li>
           </ul>

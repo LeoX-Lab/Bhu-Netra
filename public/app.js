@@ -694,8 +694,8 @@ async function resetDemo(){
 async function init(){
   drawChakra();
   $('#chipEngine').className='chip ok';
-  $('#chipEngineTxt').textContent='Engine: Server OCR (Tesseract, Node.js)';
-  $('#chipEngine').title='Documents run real Tesseract OCR on the backend - samples included';
+  $('#chipEngineTxt').textContent='Engine: Server OCR (Gemini Vision AI, Node.js)';
+  $('#chipEngine').title='Documents run Gemini Vision AI on the backend - samples included';
   $('#chipStore').className='chip ok';
   $('#chipStoreTxt').textContent='Storage: SQLite (server)';
   $('#chipStore').title='Records persist in the server database across reloads';

@@ -1,4 +1,4 @@
-/* Bhu-Netra backend — Express + SQLite + Tesseract OCR.
+/* Bhu-Netra backend — Express + SQLite + Gemini Vision OCR.
  * API endpoints have been moved to src/routes/api.js
  */
 require('dotenv').config();

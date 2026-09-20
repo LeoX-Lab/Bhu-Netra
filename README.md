@@ -29,7 +29,7 @@ Theme: Smart Automation · Team **ZeroTrace**
 ```bash
 git clone <this-repo>
 cd Bhu-Netra
-npm install        # express, multer, tesseract.js, sql.js, jsdom (dev)
+npm install        # express, multer, dotenv, sql.js, jsdom (dev)
 npm start          # → http://localhost:3000
 ```
 
@@ -109,7 +109,7 @@ Express API (src/server.js)
 
 | Component | Status |
 |---|---|
-| OCR (all documents, samples included) | **Real** — Tesseract 5 LSTM, server-side, dual-pass with digit repair |
+| OCR (all documents, samples included) | **Real** — Gemini Vision AI, server-side, multi-lingual zero-shot |
 | Language auto-detection | **Real** — script profiling + 8-script sweep |
 | Validation rules R1–R10 | **Real** — computed per record |
 | SHA-256 ledger + tamper detection | **Real** — Node crypto, persisted in SQLite |
@@ -119,7 +119,7 @@ Express API (src/server.js)
 
 ## 🛠 Tech Stack
 
-- **Backend:** Node.js · Express · SQLite (sql.js) · Tesseract.js · Multer
+- **Backend:** Node.js · Express · SQLite (sql.js) · Gemini API · Multer
 - **Frontend:** Vanilla HTML/CSS/JS (no framework, no build step)
 - **Security:** server-side hashing (Node crypto), server-side re-validation on commit, HTML-escaping on all rendered strings, upload type/size limits
 - **Testing:** 107 assertions across 7 suites — OCR+mapper, validation engine, ledger lifecycle, API end-to-end, sample narratives, full-stack UI (jsdom), restart persistence (SIGKILL + reboot, data intact)
